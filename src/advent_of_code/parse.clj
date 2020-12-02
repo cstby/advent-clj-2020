@@ -1,4 +1,5 @@
-(ns advent-of-code.parse)
+(ns advent-of-code.parse
+  (:require [clojure.string :as str]))
 
 (defn read-input
   [day]
@@ -8,24 +9,38 @@
   "Reads a file of integers separated by line breaks."
   [input]
   (->> input
-       clojure.string/split-lines
+       str/split-lines
        (map read-string)))
+
+(defn password-data
+  [input]
+  (->> input
+       str/split-lines
+       (map #(str/split % #" "))
+       ))
+
+(defn password-line
+  [input]
+  (let [[fr ch pw] input]
+    [(map read-string (re-seq #"[0-9]+" fr)) (first ch) pw]))
+
+;; unused
 
 (defn comma-integers
   "Reads a file of integers separated by line breaks."
   [input]
-  (->> (clojure.string/split input #",")
+  (->> (str/split input #",")
        (map read-string)))
 
 (defn wire-paths
   ""
   [input]
-  (->> (clojure.string/split-lines input)
-       (map #(clojure.string/split % #","))))
+  (->> (str/split-lines input)
+       (map #(str/split % #","))))
 
 (defn orbits
   ""
   [input]
-  (->> (clojure.string/split-lines input)
-       (map #(clojure.string/split % #"\)"))
+  (->> (str/split-lines input)
+       (map #(str/split % #"\)"))
        set))
